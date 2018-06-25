@@ -13,7 +13,7 @@ Notes on the Udacity course. [Link](https://www.udacity.com/course/artificial-in
 ### Total Probability
 
 - Give equal probability for entire space
-	* Belief
+	* Initialized location belief
 - Match with known key points
 	* Reduces probability to particular locations
 	* Posterior belief
