@@ -1,6 +1,6 @@
 # Artificial Intelligence for Robotics, Udacity
 
-Notes on the Udacity course. [Link](https://www.udacity.com/course/artificial-intelligence-for-robotics--cs373)
+Notes on the Udacity course. [Course Site](https://www.udacity.com/course/artificial-intelligence-for-robotics--cs373)
 
 ## Localization
 
