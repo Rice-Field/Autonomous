@@ -19,7 +19,6 @@ Notes on the Udacity course. [Course Site](https://www.udacity.com/course/artifi
 	* Posterior belief
 - Use motion to shift location beliefs
 	* Convolution
-	* Inaccurate motion accrues, makes localization hard 
 - Using motion and key points together
 	* Narrows location belief until localized
 	* probabities are never zeroed out to account for errors
@@ -62,3 +61,31 @@ Notes on the Udacity course. [Course Site](https://www.udacity.com/course/artifi
 3. ║ .11 ║ .33 ║ .33 ║ .11 ║ .11 ║ normalize
    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
 ```
+
+### Motion
+- Inaccurate motion accrues, makes localization hard
+	* given enough movement localization will return to
+	maximum entropy
+	* Cycle of gaining and losing information from sensing and moving
+
+```
+Exact = 0.8, probability
+Overshoot = 0.1
+Undershoot = 0.1
+   ╔═══════════════╗
+1. ║    ▓          ║ Move 2 to the right
+   ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+   ╔═══════════════╗
+2. ║     ░▓░       ║ Errors in measurement and movement
+   ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+   ╔═══════════════╗
+3. ║▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒║ Max entropy, can be reached in 1000 movements
+   ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+```
+
+### Bayes' Rule
+* p(Xi|Z) = P(Z|Xi)P(Xi)/P(Z)
+	- P(Z|Xi) = measurement probability
+	- P(Xi) = prior
+	- P(Z) = sum P(Z|Xi)P(Xi)
+* Total probability
