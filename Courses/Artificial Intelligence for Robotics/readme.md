@@ -96,8 +96,12 @@ Undershoot = 0.1
 
 - Used to estimate the state of a system
    * Will be used for tracking
-- Similar to the Monte Carlo method
+- Similar to the Monte Carlo method (Carlo was used for localization earlier)
    * Kalman is continuous, Carlo is discrete
+
+### Gaussian Representation
+- Maintain mean and variance to estimate localization of object
+   * Continuous space compared the histogram space previously used
 
 ## Particle Filters
 
