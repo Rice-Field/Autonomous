@@ -89,3 +89,13 @@ Undershoot = 0.1
 	- P(Xi) = prior
 	- P(Z) = sum P(Z|Xi)P(Xi)
 * Total probability
+
+## Kalman Filters
+
+## Particle Filters
+
+## Search
+
+## PID Control
+
+## SLAM
