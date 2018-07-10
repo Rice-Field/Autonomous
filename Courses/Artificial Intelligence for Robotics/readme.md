@@ -92,6 +92,13 @@ Undershoot = 0.1
 
 ## Kalman Filters
 
+### Initial info
+
+- Used to estimate the state of a system
+   * Will be used for tracking
+- Similar to the Monte Carlo method
+   * Kalman is continuous, Carlo is discrete
+
 ## Particle Filters
 
 ## Search
