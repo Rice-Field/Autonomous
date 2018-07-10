@@ -94,6 +94,14 @@ Undershoot = 0.1
 
 ### Initial info
 
+```
+      ┌ ─ ─ ─ ─ ─ ─ ┐
+      |             √
+   update      prediction
+      ^             |
+      └ ─ ─ ─ ─ ─ ─ ┘
+```
+
 - Used to estimate the state of a system
    * Will be used for tracking
 - Similar to the Monte Carlo method (Carlo was used for localization earlier)
