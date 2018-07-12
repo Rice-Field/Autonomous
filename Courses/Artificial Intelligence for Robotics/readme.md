@@ -104,6 +104,7 @@ Undershoot = 0.1
 
 - Used to estimate the state of a system
    * Will be used for tracking
+   * Using observables we are able to derive information on the hidden states
 - Similar to the Monte Carlo method (Carlo was used for localization earlier)
    * Kalman is continuous, Carlo is discrete
 
@@ -115,6 +116,14 @@ Undershoot = 0.1
 - Old mean plus motion equals new belief mean
 - Old sigma plus motion variance equals new belief variance
    * Without new measurements, certainty decreases
+
+```
+| u` | <-- | 1 1 | | u | State transition function
+| ü` |     | 0 1 | | ü |
+
+| z | <--  | 1 0 | | u | Measurement function
+                   | ü |
+```
 
 ### MultiVariate Representation
 - 1 mean for each dimension, vector
