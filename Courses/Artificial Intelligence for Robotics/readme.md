@@ -111,6 +111,12 @@ Undershoot = 0.1
 - Maintain mean and variance to estimate localization of object
    * Continuous space compared the histogram space previously used
 
+### Motion
+- Old mean plus motion equals new belief mean
+- Old sigma plus motion variance equals new belief variance
+   * Without new measurements, certainty decreases
+
+
 ## Particle Filters
 
 ## Search
