@@ -118,6 +118,8 @@ Undershoot = 0.1
    * Without new measurements, certainty decreases
 
 ```
+Matrix Multiplication
+
 | u` | <-- | 1 1 | | u | State transition function
 | ü` |     | 0 1 | | ü |
 
