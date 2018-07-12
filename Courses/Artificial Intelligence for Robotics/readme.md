@@ -116,6 +116,10 @@ Undershoot = 0.1
 - Old sigma plus motion variance equals new belief variance
    * Without new measurements, certainty decreases
 
+### MultiVariate Representation
+- 1 mean for each dimension, vector
+- variance is a DxD matrix, called co-variance
+- 2D looks like contour lines
 
 ## Particle Filters
 
