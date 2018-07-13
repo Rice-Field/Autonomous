@@ -105,12 +105,29 @@ def eval(r, p):
 
 ############################################
 
-myrobot = robot()
-myrobot.set(30, 50, (pi/2))
-print(myrobot.sense())
+# myrobot = robot()
+# myrobot.set_noise(5.0, 0.1, 5.0)
+# myrobot.set(30, 50, (pi/2))
+# print(myrobot.sense())
 
-myrobot = myrobot.move((-pi/2), 15)
-print(myrobot.sense())
+# myrobot = myrobot.move((-pi/2), 15)
+# print(myrobot.sense())
 
-myrobot = myrobot.move((-pi/2), 10)
-print(myrobot.sense())
+# myrobot = myrobot.move((-pi/2), 10)
+# print(myrobot.sense())
+
+N = 1000
+p = []
+
+# generate random particles with different positions and orientations
+for i in range(N):
+    x = robot()
+    x.set_noise(.05, 0.05, 5.0)
+    p.append(x.move(0.1,5))
+
+w = []
+
+# Produce importance weight for each particle
+# based of measurements and landmarks
+for i in range(N):
+    w.append(p[i].measurement_prob(p[i].sense()))
