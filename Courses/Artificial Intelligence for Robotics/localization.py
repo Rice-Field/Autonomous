@@ -1,5 +1,6 @@
 # Artificial Intelligence for Robotics, Udacity
 # Jonathon Rice
+# Python 3.6
 
 import numpy as np
 

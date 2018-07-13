@@ -119,12 +119,24 @@ Undershoot = 0.1
 
 ```
 Matrix Multiplication
+x = position, m = motion
 
-| u` | <-- | 1 1 | | u | State transition function
-| ü` |     | 0 1 | | ü |
+| x` | <-- | 1 1 | | x | State transition function, F
+| m` |     | 0 1 | | m |
 
-| z | <--  | 1 0 | | u | Measurement function
-                   | ü |
+| z | <--  | 1 0 | | x | Measurement function, H
+                   | m |
+
+Prediction                    x = estimate
+x` = Fx + u                   P = uncertainty covariance
+P` = F * P * F^T              F = state transition matrix
+                              u = motion vector
+Measurement                   z = measurement
+y = z - H * x                 H = measurement function
+S = H * P * H^T + R           R = measurement noise
+K = P * H^T * S^-1            I = identity matrix
+x` = x + (K * y)
+P` = (I - K * H) * P
 ```
 
 ### MultiVariate Representation
