@@ -120,12 +120,14 @@ Undershoot = 0.1
 ```
 Matrix Multiplication
 x = position, m = motion
-
+┌    ┐     ┌     ┐ ┌   ┐
 | x` | <-- | 1 1 | | x | State transition function, F
 | m` |     | 0 1 | | m |
-
+└    ┘     └     ┘ └   ┘
+┌   ┐      ┌     ┐ ┌   ┐
 | z | <--  | 1 0 | | x | Measurement function, H
-                   | m |
+└   ┘      └     ┘ | m |
+                   └   ┘
 
 Prediction                    x = estimate
 x` = Fx + u                   P = uncertainty covariance
@@ -151,3 +153,8 @@ P` = (I - K * H) * P
 ## PID Control
 
 ## SLAM
+
+
+```
+▓▒░ ╔═╚╗╝╦╩║¯ ┌┐┘─└ ASCII builders
+```
