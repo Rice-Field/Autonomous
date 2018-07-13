@@ -160,6 +160,12 @@ kalman.py implements these equations
    * particles survive based of consistency with measurements
 - Easy to program
 
+### Resampling
+- An importance weight is assigned to each particle
+   * based off the consistency with measurements
+- Normalized weights are used as probability for survival
+   * With replacement, so a particle can have multiple copies
+
 ## Search
 
 ## PID Control
