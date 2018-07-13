@@ -147,8 +147,18 @@ kalman.py implements these equations
 - 1 mean for each dimension, vector
 - variance is a DxD matrix, called co-variance
 - 2D looks like contour lines
+- Kalman filter has a quadratic runtime
+   * Previous histogram filter has exponential runtime
 
 ## Particle Filters
+
+### Initial info
+- state space: continuous
+- belief: multimodal
+- runtime: good for tracking, exponential with high dimensions
+- Distribute particle sets evenly, (x, y, direction)
+   * particles survive based of consistency with measurements
+- Easy to program
 
 ## Search
 
