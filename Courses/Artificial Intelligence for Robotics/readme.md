@@ -139,6 +139,8 @@ S = H * P * H^T + R           R = measurement noise
 K = P * H^T * S^-1            I = identity matrix
 x` = x + (K * y)
 P` = (I - K * H) * P
+
+kalman.py implements these equations
 ```
 
 ### MultiVariate Representation
