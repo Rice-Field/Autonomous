@@ -131,13 +131,15 @@ sum1 = 0.0
 # based of measurements and landmarks
 for i in range(N):
     w.append(p[i].measurement_prob(p[i].sense()))
-    sum1 += w[0]
-
-
-for i in range(N):
-    w[i] /= sum1
 
 p3 = []
+sum1 = 0.0
+w2 = []
+for i in range(N):
+    sum1 += w[i]
+for i in range(N):
+    w[i] /= sum1
+    
 k = 0
 while(len(p3) < 1000):
     if random.uniform(0, 1) <= w[k]:
@@ -145,4 +147,5 @@ while(len(p3) < 1000):
     k += 1
     if k >= 1000:
         k = 0
+
 print(p3)
