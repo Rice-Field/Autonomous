@@ -126,8 +126,23 @@ for i in range(N):
     p.append(x.move(0.1,5))
 
 w = []
-
+sum1 = 0.0
 # Produce importance weight for each particle
 # based of measurements and landmarks
 for i in range(N):
     w.append(p[i].measurement_prob(p[i].sense()))
+    sum1 += w[0]
+
+
+for i in range(N):
+    w[i] /= sum1
+
+p3 = []
+k = 0
+while(len(p3) < 1000):
+    if random.uniform(0, 1) <= w[k]:
+        p3.append(p[k])
+    k += 1
+    if k >= 1000:
+        k = 0
+print(p3)
