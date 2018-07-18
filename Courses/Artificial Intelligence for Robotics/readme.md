@@ -174,9 +174,29 @@ kalman.py implements these equations
 - Given map, starting location, goal location and cost
    * Find minimum cost path
 
-### A*
+### A* Method
+- More efficient than checking every location
+   * a heuristic function
 
+```
+   Heuristic Cost Function
+      Cell value = additional cost to goal at position
 
+   ┌────┬────┬────┬────┬────┐
+   │ 08 │ 07 │ 06 │ 05 │ 04 │
+   ├────┼────┼────┼────┼────┤
+   │ 07 │ 06 │ 05 │ 04 │ 03 │
+   ├────┼────┼────┼────┼────┤
+   │ 06 │ 05 │ 04 │ 03 │ 02 │
+   ├────┼────┼────┼────┼────┤
+   │ 05 │ 04 │ 03 │ 02 │ 01 │
+   ├────┼────┼────┼────┼────┤
+   │ 04 │ 03 │ 02 │ 01 │ 00 │ <── Goal
+   └────┴────┴────┴────┴────┘
+
+   Assumes no obstacles
+
+```
 
 ## PID Control
 
@@ -184,5 +204,5 @@ kalman.py implements these equations
 
 
 ```
-▓▒░ ╔═╚╗╝╦╩║¯ ┌┐┘─└ ASCII builders
+▓▒░ ╔═╚╗╝╦╩║¯ ┌ ┐┘─└ ┼ ├ ┬ ┴ ┤ │ ASCII builders
 ```
