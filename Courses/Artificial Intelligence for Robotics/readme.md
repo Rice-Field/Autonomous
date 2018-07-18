@@ -174,6 +174,9 @@ kalman.py implements these equations
 - Given map, starting location, goal location and cost
    * Find minimum cost path
 
+### A*
+
+
 
 ## PID Control
 
