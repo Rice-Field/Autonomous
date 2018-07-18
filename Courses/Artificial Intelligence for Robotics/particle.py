@@ -116,36 +116,39 @@ def eval(r, p):
 # myrobot = myrobot.move((-pi/2), 10)
 # print(myrobot.sense())
 
+# Localizes position and orientation
+# by resampling particles with weight
+T=10
+myrobot = robot()
+myrobot = myrobot.move(0.1, 5.0)
+Z = myrobot.sense()
 N = 1000
 p = []
-
-# generate random particles with different positions and orientations
-for i in range(N):
-    x = robot()
-    x.set_noise(.05, 0.05, 5.0)
-    p.append(x.move(0.1,5))
-
-w = []
-sum1 = 0.0
-# Produce importance weight for each particle
-# based of measurements and landmarks
-for i in range(N):
-    w.append(p[i].measurement_prob(p[i].sense()))
-
-p3 = []
-sum1 = 0.0
-w2 = []
-for i in range(N):
-    sum1 += w[i]
-for i in range(N):
-    w[i] /= sum1
+for b in range(T):
+    for i in range(N):
+        x = robot()
+        x.set_noise(0.05, 0.05, 5.0)
+        p.append(x)
     
-k = 0
-while(len(p3) < 1000):
-    if random.uniform(0, 1) <= w[k]:
-        p3.append(p[k])
-    k += 1
-    if k >= 1000:
-        k = 0
+    p2 = []
+    for i in range(N):
+        p2.append(p[i].move(0.1, 5.0))
+    p = p2
+    
+    w = []
+    for i in range(N):
+        w.append(p[i].measurement_prob(Z))
+    
+    p3 = []
+    index = int(random.random() * N)
+    beta = 0.0
+    mw = max(w)
+    for i in range(N):
+        beta += random.random() * 2.0 * mw
+        while beta > w[index]:
+            beta -= w[index]
+            index = (index + 1) % N
+        p3.append(p[index])
+    p = p3
 
-print(p3)
+print(p)
