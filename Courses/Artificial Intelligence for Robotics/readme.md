@@ -8,7 +8,7 @@ Notes on the Udacity course. [Course Site](https://www.udacity.com/course/artifi
 
 - GPS isn't very accurate
 	* 10m error, much higher with buildings
-- need 2-10 cm of error for autonomous driving
+- Need 2-10 cm of error for autonomous driving
 
 ### Total Probability
 
@@ -21,7 +21,7 @@ Notes on the Udacity course. [Course Site](https://www.udacity.com/course/artifi
 	* Convolution
 - Using motion and key points together
 	* Narrows location belief until localized
-	* probabities are never zeroed out to account for errors
+	* Probabities are never zeroed out to account for errors
 
 ```
 1D Location Probability
@@ -42,13 +42,13 @@ Notes on the Udacity course. [Course Site](https://www.udacity.com/course/artifi
 ```
 
 ### Example
-- 5 grid cells, start uniformed
+- 5 Grid cells, start uniformed
 	* Each cell p = 0.2
-- 2 cells contain key point, index 1 & 2
-	* multiply by .6 for key point, otherwise .2
-	* non-key point p = .04, key point p = .12
-	* normalize so sum = 1
-		- by dividing each cell by sum
+- 2 Cells contain key point, index 1 & 2
+	* Multiply by .6 for key point, otherwise .2
+	* Non-key point p = .04, key point p = .12
+	* Normalize so sum = 1
+		- By dividing each cell by sum
 
 ```
    ╔════════════════════════╗
@@ -64,7 +64,7 @@ Notes on the Udacity course. [Course Site](https://www.udacity.com/course/artifi
 
 ### Motion
 - Inaccurate motion accrues, makes localization hard
-	* given enough movement localization will return to
+	* Given enough movement localization will return to
 	maximum entropy
 	* Cycle of gaining and losing information from sensing and moving
 
@@ -145,7 +145,7 @@ kalman.py implements these equations
 
 ### MultiVariate Representation
 - 1 mean for each dimension, vector
-- variance is a DxD matrix, called co-variance
+- Variance is a DxD matrix, called co-variance
 - 2D looks like contour lines
 - Kalman filter has a quadratic runtime
    * Previous histogram filter has exponential runtime
@@ -153,20 +153,27 @@ kalman.py implements these equations
 ## Particle Filters
 
 ### Initial info
-- state space: continuous
-- belief: multimodal
-- runtime: good for tracking, exponential with high dimensions
+- State space: continuous
+- Belief: multimodal
+- Runtime: good for tracking, exponential with high dimensions
 - Distribute particle sets evenly, (x, y, direction)
-   * particles survive based of consistency with measurements
+   * Particles survive based of consistency with measurements
 - Easy to program
 
 ### Resampling
 - An importance weight is assigned to each particle
-   * based off the consistency with measurements
+   * Based off the consistency with measurements
 - Normalized weights are used as probability for survival
    * With replacement, so a particle can have multiple copies
 
 ## Search
+
+### Initial info
+- Method used for motion planning
+   * Using a discrete representation
+- Given map, starting location, goal location and cost
+   * Find minimum cost path
+
 
 ## PID Control
 
