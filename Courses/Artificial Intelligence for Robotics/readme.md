@@ -177,10 +177,13 @@ kalman.py implements these equations
 ### A* Method
 - More efficient than checking every location
    * a heuristic function
+- By attempting to predict addition cost from
+cell locations reduces search space to optimal locations
+   * under the right conditions
 
 ```
    Heuristic Cost Function
-      Cell value = additional cost to goal at position
+      Cell value = additional cost to goal from cell
 
    ┌────┬────┬────┬────┬────┐
    │ 08 │ 07 │ 06 │ 05 │ 04 │
@@ -195,6 +198,27 @@ kalman.py implements these equations
    └────┴────┴────┴────┴────┘
 
    Assumes no obstacles
+
+```
+### Dynamic Programming
+- Given map and goal
+   * gives best path from anywhere
+   * By labeling each cell with an optimal policy
+
+```
+   Dynamic Programming
+
+   ┌────┬────┬────┬────┬────┐
+   │ V  │ V  │ <  │ <  │ <  │
+   ├────┼────┼────┼────┼────┤
+   │ V  │ V  │▓▓▓▓│▓▓▓▓│▓▓▓▓│
+   ├────┼────┼────┼────┼────┤
+   │ V  │ V  │▓▓▓▓│▓▓▓▓│ V  │
+   ├────┼────┼────┼────┼────┤
+   │ V  │ V  │ V  │▓▓▓▓│ V  │
+   ├────┼────┼────┼────┼────┤
+   │  > │  > │  > │  > │ G* │
+   └────┴────┴────┴────┴────┘
 
 ```
 
