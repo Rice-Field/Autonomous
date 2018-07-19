@@ -186,20 +186,72 @@ def Astar(grid,init,goal,cost,heuristic):
 
 cost = 1
 
+# not an efficient implementation
 def compute_value(grid,goal,cost):
+    # initialize with large enough to avoid conflict
     value = [[99 for col in range(len(grid[0]))] for row in range(len(grid))]
 
+    # keep track if anything is changed
     change = True
+    while change:
+        change = False
+
+        # move through the entire grid, can be improved
+        for x in range(len(grid)):
+            for y in range(len(grid[0])):
+
+                # if goal set to 0
+                if goal[0] == x and goal[1] == y:
+                    if value[x][y] > 0:
+                        value[x][y] = 0
+                        change = True
+
+                elif grid[x][y] == 0:
+                    # check each possible action
+                    for a in range(len(delta)):
+                        x2 = x + delta[a][0]
+                        y2 = y + delta[a][1]
+
+                        # if in bounds, real states
+                        if x2 >= 0 and x2 < len(grid) and y2 >=0 and y2 < len(grid[0]):
+                            if grid[x2][y2] == 0:
+
+                                # new cost
+                                v2 = value[x2][y2] + cost
+                                # only update if an improved cost
+                                if v2 < value[x][y]:
+                                    change = True
+                                    value[x][y] = v2
+
+    return value 
+
+# Calculates value for each cell
+# ##########################################
+# value = compute_value(grid,goal,cost)
+# for i in range(len(value)):
+#     print(value[i])
+
+grid = [[0, 1, 0, 0, 0, 0],
+        [0, 1, 1, 0, 1, 0],
+        [0, 0, 0, 0, 1, 0],
+        [0, 1, 1, 1, 1, 0],
+        [0, 1, 0, 1, 1, 0]]
+
+def optimum_policy(grid,goal,cost):
+    policy = [[' ' for row in range(len(grid[0]))] for col in range(len(grid))]
+    value = [[99 for row in range(len(grid[0]))] for col in range(len(grid))]
+    change = True
+    least = 999
 
     while change:
         change = False
 
         for x in range(len(grid)):
             for y in range(len(grid[0])):
-
                 if goal[0] == x and goal[1] == y:
                     if value[x][y] > 0:
                         value[x][y] = 0
+
                         change = True
 
                 elif grid[x][y] == 0:
@@ -207,16 +259,37 @@ def compute_value(grid,goal,cost):
                         x2 = x + delta[a][0]
                         y2 = y + delta[a][1]
 
-                        if x2 >= 0 and x2 < len(grid) and y2 >=0 and y2 < len(grid[0]):
-                            if grid[x2][y2] == 0:
+                        if x2 >= 0 and x2 < len(grid) and y2 >= 0 and y2 < len(grid[0]) and grid[x2][y2] == 0:
+                            v2 = value[x2][y2] + cost
 
-                                v2 = value[x2][y2] + cost
-                                if v2 < value[x][y]:
-                                    change = True
-                                    value[x][y] = v2
+                            if v2 < value[x][y]:
+                                change = True
+                                value[x][y] = v2
+    for x in range(len(grid)):
+        for y in range(len(grid[0])):
+            if (goal[0] == x and goal[1] == y):
+                policy[x][y] = '*'
+            elif value[x][y] == 99:
+                policy[x][y] = ' '
+            else:
+                for a in range(len(delta)):
+                    x2 = x + delta[a][0]
+                    y2 = y + delta[a][1]
 
-    return value 
+                    if x2 >= 0 and x2 < len(grid) and y2 >= 0 and y2 < len(grid[0]):
+                        v2 = value[x2][y2] + cost
 
-value = compute_value(grid,goal,cost)
-for i in range(len(value)):
-    print(value[i])
+                        if v2 < least:
+                            least = v2
+                            policy[x][y] = delta_name[a]
+                least = 999
+
+
+    return policy
+
+# Determines optimal policy for each cell
+# ##########################################
+# policy = optimum_policy(grid,goal,cost)
+# for i in range(len(policy)):
+#     print(policy[i])
+
