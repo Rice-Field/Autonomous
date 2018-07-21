@@ -204,6 +204,9 @@ cell locations reduces search space to optimal locations
 - Given map and goal
    * gives best path from anywhere
    * By labeling each cell with an optimal policy
+- Recursively fill in cost from goal to cells
+   * Costs start at 0 from goal
+   * assign policies that lower cost
 
 ```
    Dynamic Programming
