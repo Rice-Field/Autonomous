@@ -227,6 +227,30 @@ cell locations reduces search space to optimal locations
 
 ## PID Control
 
+### Initial info
+- Discrete motion is not ideal for robot motion
+   * Generate smooth paths from discrete ones
+   * Diagonal straight lines might be infeasible
+
+### Smoothing Algorithm
+   ```
+   y_i = x_i
+
+   Optimize:
+      (x_i - y_i)^2 -> min
+      (y_i - y_i+1)^2 -> min
+
+   apply a weight to both terms
+   ```
+
+### Control
+- Steering in proportion to Cross Track Error
+   * CTE: Distance from desired trajectory
+   * P of PID, will overshoot with just proportion
+- To avoid overshooting CTE, using temporal differential
+   * Smoother approach to desired trajectory
+- Include proportion to sum of CTE
+
 ## SLAM
 
 
