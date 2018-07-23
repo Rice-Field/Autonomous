@@ -338,58 +338,11 @@ def calcHeu(grid,goal):
 
 def optimum_policy2D(grid,init,goal,cost):
     policy2D = [[' ' for row in range(len(grid[0]))] for col in range(len(grid))]
-    value = [[99 for row in range(len(grid[0]))] for col in range(len(grid))]
-    least = 999
-    queue = []
-    x = init[0]
-    y = init[1]
-    ori = init[2]
-    # keep track of branching
-    branch = 0
-
-    queue.append([x,y,ori,branch])
-    value[init[0]][init[1]] = 0
-
-    while len(queue) != 0:
-        print(queue)
-        current = queue.pop(0)
-        x = current[0]
-        y = current[1]
-        ori = current[2]
-        turn = ori
-
-        # no work to do if goal
-        if goal[0] == x and goal[1] == y:
-            continue
-
-        for a in range(len(action)):
-            turn = (ori + action[a]) % 4
-            x2 = x + forward[turn][0]
-            y2 = y + forward[turn][1]
-
-            if x2 >= 0 and x2 < len(grid) and y2 >= 0 and y2 < len(grid[0]) and grid[x2][y2] == 0:
-                v2 = value[x][y] + cost[a]
-
-                if v2 < value[x2][y2]:
-                    value[x2][y2] = v2
-                    queue.append([x2,y2,turn])
-                    policy2D[x][y] = action_name[a]
-
-    for i in range(len(value)):
-        print(value[i])
-
-    return policy2D
-
-# policy2D = optimum_policy2D(grid,init,goal,cost)
-# for i in range(len(policy2D)):
-#     print(policy2D[i])
-
-def optimum_policy2D2(grid,init,goal,cost):
-    policy2D = [[' ' for row in range(len(grid[0]))] for col in range(len(grid))]
-    value = [[[99 for row in range(len(grid[0]))] for col in range(len(grid))],
-            [[99 for row in range(len(grid[0]))] for col in range(len(grid))],
-            [[99 for row in range(len(grid[0]))] for col in range(len(grid))],
-            [[99 for row in range(len(grid[0]))] for col in range(len(grid))]]
+    # create a value grid for each orientation
+    value = [[[999 for row in range(len(grid[0]))] for col in range(len(grid))],
+            [[999 for row in range(len(grid[0]))] for col in range(len(grid))],
+            [[999 for row in range(len(grid[0]))] for col in range(len(grid))],
+            [[999 for row in range(len(grid[0]))] for col in range(len(grid))]]
     least = 999
     queue = []
     x = init[0]
@@ -401,7 +354,7 @@ def optimum_policy2D2(grid,init,goal,cost):
     value[ori][init[0]][init[1]] = ccost
 
     while len(queue) != 0:
-        print(queue)
+        # print(queue)
         current = queue.pop(0)
         x = current[0]
         y = current[1]
@@ -424,17 +377,113 @@ def optimum_policy2D2(grid,init,goal,cost):
                 if v2 < value[turn][x2][y2]:
                     value[turn][x2][y2] = v2
                     queue.append([x2,y2,turn,v2])
-                    policy2D[x][y] = action_name[a]
 
     for i in range(len(value)):
         for k in range(len(value[0])):
             print(value[i][k])
         print()
 
+    # find lowest cost from goal to start
+    least = 999
+    queue = []
+    x = goal[0]
+    y = goal[1]
+    ccost = 999
+    ori = 0
+    nextflag = 0
+    policy2D[x][y] = '*'
+    # find orientation of min value
+    for i in range(4):
+        if value[i][x][y] < ccost:
+            ccost = value[i][x][y]
+            ori = i
+
+    queue.append([x,y,ori])
+
+    while len(queue) != 0:
+        # print(queue)
+        current = queue.pop(0)
+        x = current[0]
+        y = current[1]
+        ori = current[2]
+        ccost = value[ori][x][y]
+
+        if goal[0] != x or goal[1] != y:
+            # action we took to get to future location
+            for a in range(len(action)):
+                turn = (ori + action[a]) % 4
+                x2 = x + forward[turn][0]
+                y2 = y + forward[turn][1]
+                sa = 0
+                # if x2 >= 0 and x2 < len(grid) and y2 >= 0 and y2 < len(grid[0]) and grid[x2][y2] == 0:
+                #     if value[turn][x2][y2] < least and value[turn][x2][y2] > ccost:
+                        # least = value[turn][x2][y2]
+                        # sa = a
+                if prevx == x2 and prevy == y2:
+                        policy2D[x][y] = action_name[a]
+            # policy2D[x][y] = action_name[sa]
+            # least = 999
+
+        # look for min delta value and decrease in value
+        # that is part of the optimal path
+        for i in range(4):
+            x2 = x + forward[i][0]
+            y2 = y + forward[i][1]
+            if x2 >= 0 and x2 < len(grid) and y2 >= 0 and y2 < len(grid[0]) and grid[x2][y2] == 0:
+                for j in range(4):
+                    pcost = value[j][x2][y2]
+                    # print(pcost, ((i-2)%4))
+                    if ccost - pcost < least and ccost > pcost:
+                        least = ccost - pcost
+                        xs = x2
+                        ys = y2
+                        oris = j
+                        nextflag = 1
+
+        if nextflag == 1:
+            queue.append([xs,ys,oris])
+            # prevent falling into a route loop
+            value[oris][x][y] = 999
+
+        nextflag = 0
+        least = 999
+        prevx = x
+        prevy = y
+
+
     return policy2D
 
 
-policy2D = optimum_policy2D2(grid,init,goal,cost)
+# policy2D = optimum_policy2D(grid,init,goal,cost)
+# for i in range(len(policy2D)):
+#     print(policy2D[i])
+
+grid = [[0, 0, 0, 0, 1, 1],
+        [0, 0, 1, 0, 0, 0],
+        [0, 0, 0, 0, 1, 0],
+        [0, 0, 1, 1, 1, 0],
+        [0, 0, 0, 0, 1, 0]] 
+init = [4, 5, 0] 
+goal = [4, 3] 
+cost = [1, 1, 1]
+
+# print()
+# policy2D = optimum_policy2D(grid,init,goal,cost)
+# for i in range(len(policy2D)):
+#     print(policy2D[i])
+
+grid = [[0, 0, 0, 0, 0, 0, 0],
+        [1, 1, 1, 1, 1, 1, 0],
+        [0, 1, 0, 0, 0, 1, 0],
+        [0, 1, 0, 1, 0, 1, 0],
+        [0, 1, 0, 1, 0, 0, 0],
+        [0, 1, 1, 1, 1, 1, 0],
+        [0, 0, 0, 0, 0, 0, 0]] 
+init = [0, 0, 3] 
+goal = [4, 2] 
+cost = [10, 40, 65]
+
+policy2D = optimum_policy2D(grid,init,goal,cost)
 for i in range(len(policy2D)):
     print(policy2D[i])
 
@@ -450,3 +499,53 @@ for i in range(len(policy2D)):
 # policy = optimum_policy(grid,goal,cost)
 # for i in range(len(policy)):
 #     print(policy[i])
+
+
+
+
+
+
+################################################
+# bad way of finding path
+################################################
+    # least = 999
+    # queue = []
+    # x = init[0]
+    # y = init[1]
+    # ori = init[2]
+    # ccost = 0
+
+    # queue.append([x,y,ori])
+
+    # while len(queue) != 0:
+    #     # print(queue)
+    #     current = queue.pop(0)
+    #     x = current[0]
+    #     y = current[1]
+    #     ori = current[2]
+    #     turn = ori
+
+    #     # no work to do if goal reached
+    #     if goal[0] == x and goal[1] == y:
+    #         policy2D[x][y] = '*'
+    #         continue
+
+    #     for a in range(len(action)):
+    #         turn = (ori + action[a]) % 4
+    #         x2 = x + forward[turn][0]
+    #         y2 = y + forward[turn][1]
+
+    #         if x2 >= 0 and x2 < len(grid) and y2 >= 0 and y2 < len(grid[0]) and grid[x2][y2] == 0:
+    #             if value[turn][x2][y2] < least:
+    #                 least = value[turn][x2][y2]
+    #                 sx = x2
+    #                 sy = y2
+    #                 sturn = turn
+    #                 sa = a
+
+    #     queue.append([sx,sy,sturn])
+    #     # mark optimal policy
+    #     policy2D[x][y] = action_name[sa]
+    #     least = 999
+    #     # prevent falling into a route loop
+    #     value[sturn][sx][sy] = 99
