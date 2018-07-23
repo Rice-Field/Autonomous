@@ -348,18 +348,22 @@ def optimum_policy2D(grid,init,goal,cost):
             [[999 for row in range(len(grid[0]))] for col in range(len(grid))]]
     least = 999
     queue = []
+    # grab starting point
     x = init[0]
     y = init[1]
     ori = init[2]
     ccost = 0
 
+    # place 1st point into the queue
     queue.append([x,y,ori,ccost])
+    # set starting point to 0 cost
     value[ori][init[0]][init[1]] = ccost
 
     # go through each point's available moves, put in queue
     # if a better move shows up, udpate and throw back into the queue
     while len(queue) != 0:
         # print(queue)
+        # grab next point
         current = queue.pop(0)
         x = current[0]
         y = current[1]
@@ -390,7 +394,7 @@ def optimum_policy2D(grid,init,goal,cost):
     #         print(value[i][k])
     #     print()
 
-    # find lowest cost from goal to start
+    # find lowest cost path starting from goal to starting location
     least = 999
     queue = []
     x = goal[0]
@@ -399,7 +403,7 @@ def optimum_policy2D(grid,init,goal,cost):
     ori = 0
     nextflag = 0
     policy2D[x][y] = '*'
-    # find orientation of min value
+    # start at orientation with min cost at goal
     for i in range(4):
         if value[i][x][y] < ccost:
             ccost = value[i][x][y]
@@ -416,7 +420,7 @@ def optimum_policy2D(grid,init,goal,cost):
         ccost = value[ori][x][y]
 
         if goal[0] != x or goal[1] != y:
-            # action we took to get to future location
+            # action we took to get to future location (previous point)
             for a in range(len(action)):
                 turn = (ori + action[a]) % 4
                 x2 = x + forward[turn][0]
@@ -521,7 +525,8 @@ def optimum_policy2D_answer(grid,init,goal,cost):
 # for i in range(1000):
 #     policy2D = optimum_policy2D(grid,init,goal,cost)
 # end = time.time()
-# print(end-start)
+# print('My implementation')
+# print('time: ' + str(end-start))
 # for i in range(len(policy2D)):
 #     print(policy2D[i])
 
@@ -530,7 +535,8 @@ def optimum_policy2D_answer(grid,init,goal,cost):
 # for i in range(1000):
 #     policy2D = optimum_policy2D_answer(grid,init,goal,cost)
 # end = time.time()
-# print(end-start)
+# print('Course implementation')
+# print('time: ' + str(end-start))
 # for i in range(len(policy2D)):
 #     print(policy2D[i])
 
@@ -573,22 +579,24 @@ goal = [4, 2]
 cost = [10, 40, 65]
 
 # approximately 20x faster than course's solution
-# start = time.time()
-# for i in range(1000):
-#     policy2D = optimum_policy2D(grid,init,goal,cost)
-# end = time.time()
-# print(end-start)
-# for i in range(len(policy2D)):
-#     print(policy2D[i])
+start = time.time()
+for i in range(1000):
+    policy2D = optimum_policy2D(grid,init,goal,cost)
+end = time.time()
+print('My implementation')
+print('time: ' + str(end-start))
+for i in range(len(policy2D)):
+    print(policy2D[i])
 
-# print()
-# start = time.time()
-# for i in range(1000):
-#     policy2D = optimum_policy2D_answer(grid,init,goal,cost)
-# end = time.time()
-# print(end-start)
-# for i in range(len(policy2D)):
-#     print(policy2D[i])
+print()
+start = time.time()
+for i in range(1000):
+    policy2D = optimum_policy2D_answer(grid,init,goal,cost)
+end = time.time()
+print('Course implementation')
+print('time: ' + str(end-start))
+for i in range(len(policy2D)):
+    print(policy2D[i])
 
 ###################################################
 
