@@ -294,9 +294,9 @@ def optimum_policy(grid,goal,cost):
 
     return policy
 
-policy = optimum_policy(grid,goal,cost)
-for i in range(len(policy)):
-    print(policy[i])
+# policy = optimum_policy(grid,goal,cost)
+# for i in range(len(policy)):
+#     print(policy[i])
 
 ###########################################
 
@@ -324,7 +324,7 @@ init = [4, 3, 0]
 goal = [2, 0]
 
 # cost of [right, center, left]
-cost2 = [2, 1, 20]
+cost = [2, 1, 20]
 
 # creates heuristic for A* based of goal location and grid size
 def calcHeu(grid,goal):
@@ -339,49 +339,41 @@ def calcHeu(grid,goal):
 def optimum_policy2D(grid,init,goal,cost):
     policy2D = [[' ' for row in range(len(grid[0]))] for col in range(len(grid))]
     value = [[99 for row in range(len(grid[0]))] for col in range(len(grid))]
-    change = True
     least = 999
+    queue = []
+    x = init[0]
+    y = init[1]
+    ori = init[2]
+    # keep track of branching
+    branch = 0
 
-    while change:
-        change = False
+    queue.append([x,y,ori,branch])
+    value[init[0]][init[1]] = 0
 
-        for x in range(len(grid)):
-            for y in range(len(grid[0])):
-                if goal[0] == x and goal[1] == y:
-                    if value[x][y] > 0:
-                        value[x][y] = 0
+    while len(queue) != 0:
+        print(queue)
+        current = queue.pop(0)
+        x = current[0]
+        y = current[1]
+        ori = current[2]
+        turn = ori
 
-                        change = True
+        # no work to do if goal
+        if goal[0] == x and goal[1] == y:
+            continue
 
-                elif grid[x][y] == 0:
-                    for a in range(len(delta)):
-                        x2 = x + delta[a][0]
-                        y2 = y + delta[a][1]
+        for a in range(len(action)):
+            turn = (ori + action[a]) % 4
+            x2 = x + forward[turn][0]
+            y2 = y + forward[turn][1]
 
-                        if x2 >= 0 and x2 < len(grid) and y2 >= 0 and y2 < len(grid[0]) and grid[x2][y2] == 0:
-                            v2 = value[x2][y2] + cost[1]
+            if x2 >= 0 and x2 < len(grid) and y2 >= 0 and y2 < len(grid[0]) and grid[x2][y2] == 0:
+                v2 = value[x][y] + cost[a]
 
-                            if v2 < value[x][y]:
-                                change = True
-                                value[x][y] = v2
-    # for x in range(len(grid)):
-    #     for y in range(len(grid[0])):
-    #         if (goal[0] == x and goal[1] == y):
-    #             policy2D[x][y] = '*'
-    #         elif value[x][y] == 99:
-    #             policy2D[x][y] = ' '
-    #         else:
-    #             for a in range(len(delta)):
-    #                 x2 = x + delta[a][0]
-    #                 y2 = y + delta[a][1]
-
-    #                 if x2 >= 0 and x2 < len(grid) and y2 >= 0 and y2 < len(grid[0]):
-    #                     v2 = value[x2][y2] + cost
-
-    #                     if v2 < least:
-    #                         least = v2
-    #                         policy2D[x][y] = delta_name[a]
-    #             least = 999
+                if v2 < value[x2][y2]:
+                    value[x2][y2] = v2
+                    queue.append([x2,y2,turn])
+                    policy2D[x][y] = action_name[a]
 
     for i in range(len(value)):
         print(value[i])
@@ -392,6 +384,60 @@ def optimum_policy2D(grid,init,goal,cost):
 # for i in range(len(policy2D)):
 #     print(policy2D[i])
 
+def optimum_policy2D2(grid,init,goal,cost):
+    policy2D = [[' ' for row in range(len(grid[0]))] for col in range(len(grid))]
+    value = [[[99 for row in range(len(grid[0]))] for col in range(len(grid))],
+            [[99 for row in range(len(grid[0]))] for col in range(len(grid))],
+            [[99 for row in range(len(grid[0]))] for col in range(len(grid))],
+            [[99 for row in range(len(grid[0]))] for col in range(len(grid))]]
+    least = 999
+    queue = []
+    x = init[0]
+    y = init[1]
+    ori = init[2]
+    ccost = 0
+
+    queue.append([x,y,ori,ccost])
+    value[ori][init[0]][init[1]] = ccost
+
+    while len(queue) != 0:
+        print(queue)
+        current = queue.pop(0)
+        x = current[0]
+        y = current[1]
+        ori = current[2]
+        ccost = current[3]
+        turn = ori
+
+        # no work to do if goal reached
+        if goal[0] == x and goal[1] == y:
+            continue
+
+        for a in range(len(action)):
+            turn = (ori + action[a]) % 4
+            x2 = x + forward[turn][0]
+            y2 = y + forward[turn][1]
+
+            if x2 >= 0 and x2 < len(grid) and y2 >= 0 and y2 < len(grid[0]) and grid[x2][y2] == 0:
+                v2 = ccost + cost[a]
+
+                if v2 < value[turn][x2][y2]:
+                    value[turn][x2][y2] = v2
+                    queue.append([x2,y2,turn,v2])
+                    policy2D[x][y] = action_name[a]
+
+    for i in range(len(value)):
+        for k in range(len(value[0])):
+            print(value[i][k])
+        print()
+
+    return policy2D
+
+
+policy2D = optimum_policy2D2(grid,init,goal,cost)
+for i in range(len(policy2D)):
+    print(policy2D[i])
+
 # heuristic = calcHeu(grid,goal)
 # for i in range(len(heuristic)):
 #     print(heuristic[i])
@@ -401,6 +447,6 @@ def optimum_policy2D(grid,init,goal,cost):
 # for i in range(len(expand)):
 #     print(expand[i])
 
-policy = optimum_policy(grid,goal,cost)
-for i in range(len(policy)):
-    print(policy[i])
+# policy = optimum_policy(grid,goal,cost)
+# for i in range(len(policy)):
+#     print(policy[i])
