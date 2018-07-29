@@ -579,6 +579,7 @@ goal = [4, 2]
 cost = [10, 40, 65]
 
 # approximately 20x faster than course's solution
+print('\n1000 calls\n')
 start = time.time()
 for i in range(1000):
     policy2D = optimum_policy2D(grid,init,goal,cost)
