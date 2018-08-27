@@ -254,6 +254,8 @@ cell locations reduces search space to optimal locations
 ## SLAM
 
 
+### Initial info
+
 ```
 ▓▒░ ╔═╚╗╝╦╩║¯ ┌ ┐┘─└ ┼ ├ ┬ ┴ ┤ │ ASCII builders
 ```
